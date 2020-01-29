@@ -25,7 +25,7 @@ export default {
             isChecked: false,
             lastUser: "",
             username: "",
-            socket : io('http://192.168.1.14:3000'),
+            socket : io(process.env.SERVER_PATH),
             users: [],
             messages: []
         }
