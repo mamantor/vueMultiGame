@@ -25,7 +25,7 @@ export default {
             isChecked: false,
             lastUser: "",
             username: "",
-            socket : io(process.env.SERVER_PATH),
+            socket : io(process.env.VUE_APP_SERVER_PATH),
             users: [],
             messages: []
         }

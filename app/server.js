@@ -18,7 +18,6 @@ io.on("connection", socket =>{
         console.log(`${username} joined the lobby`);
         socket.username = username;
         users.push(socket);
-
         io.to(socket.room).emit('userOnline', socket.username)
     });
     socket.on('room', room => {
