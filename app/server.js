@@ -1,12 +1,41 @@
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
+const admin = require("firebase-admin");
+require('dotenv').config();
+
+const uuid = require("uuid");
+
 
 let isActivated = false;
 let users = [];
 let messages = [];
 let index = 0;
 let rooms = [];
+
+var serviceAccount = require(process.env.FIREBASE_KEY);
+
+admin.initializeApp({
+    name: "server",
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://vuemultigame.firebaseio.com"
+  });
+
+var roomsRef = admin.database().ref("content/44f6e");
+
+roomsRef.on("value", function(snapshot) {
+    console.log(snapshot.val());
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
+
+roomsRef.set({tg:"dffdfdz", titi:"test2"})
+
+roomsRef.on("value", function(snapshot) {
+  console.log(snapshot.val());
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
 
 io.on("connection", socket =>{
     socket.emit('loggedIn', {
@@ -21,11 +50,18 @@ io.on("connection", socket =>{
         io.to(socket.room).emit('userOnline', socket.username)
     });
     socket.on('room', room => {
-        console.log('room =%s',room);
         rooms.push(room);
         socket.join(room);
         socket.room = room;
+        const roomRef = admin.database().ref(`rooms/`+room);
+        var newUserRef = roomRef.child('users').push({username: socket.username, uuid : uuid()})
+        console.log(newUserRef.toString())
+        socket.ref = newUserRef.toString()
+        // roomRef.set({user:[socket.username]})
+
+
         io.to(room).emit('newuserintheroom', {lastUser:socket.username})
+        
     })
 
     socket.on('activate', newActivated => {
