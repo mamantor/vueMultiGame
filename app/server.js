@@ -50,15 +50,19 @@ io.on("connection", socket =>{
         io.to(socket.room).emit('userOnline', socket.username)
     });
     socket.on('room', room => {
-        rooms.push(room);
-        socket.join(room);
-        socket.room = room;
-        const roomRef = admin.database().ref(`rooms/`+room);
-        var newUserRef = roomRef.child('users').push({username: socket.username, uuid : uuid()})
-        console.log(newUserRef.toString())
-        socket.ref = newUserRef.toString()
-        // roomRef.set({user:[socket.username]})
 
+        // FIREBASE SHIT
+        const roomRef = admin.database().ref(`rooms/`+room);
+        var newUserRef = roomRef.child('users').push({ username: socket.username, uuid : uuid()})
+        console.log(newUserRef.toString())
+
+        // SOCKET SHIT
+        socket.join(room);
+
+        // SERVER SHIT
+        rooms.push(room);
+        socket.room = room;
+        socket.ref = newUserRef.toString()
 
         io.to(room).emit('newuserintheroom', {lastUser:socket.username})
         
