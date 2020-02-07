@@ -3,7 +3,6 @@
         <button @click="startRoom()" class="btn success">Start Game</button>
         <button @click="showAbout()" class="btn success">About</button>
         <!-- <router-link to="/lobby">lobby</router-link> -->
-        <router-view></router-view>
     </div>
 </template>
 
@@ -17,7 +16,15 @@ export default {
             const newSessionUuid = uuid();
             const devSessionUuid = newSessionUuid.slice(0,4,1);
             // const devSessionUuid = 
-            this.$router.push({ path: `/lobby/${devSessionUuid}` })
+            var roomRef = this.$fb.database.ref(`rooms/${devSessionUuid}`);
+            roomRef.once('value', snapshot => {
+                if (snapshot.val()==null) {
+                    this.$router.push({ path: `/lobby/${devSessionUuid}/caster`})
+                } else {
+                    this.startRoom()
+                }
+            });
+            
         },
         showAbout () {
             this.$router.push({ path: `/about`})

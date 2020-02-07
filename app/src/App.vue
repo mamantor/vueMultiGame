@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <start-button />
+        <router-view></router-view>
     </div>
   </div>
 </template>
@@ -10,10 +10,11 @@
 import StartButton from './components/StartButton.vue'
 
 
+
+
 export default {
   name : 'app',
   components : {
-    StartButton
   }
 }
 </script>
