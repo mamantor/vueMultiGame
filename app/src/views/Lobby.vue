@@ -21,7 +21,7 @@ export default {
             lastUser: "",
             users: [],
             messages: [],
-            socket:""
+            socket: this.$io(process.env.VUE_APP_SERVER_PATH, {query:`isCaster=${this.isCaster}`})
         }
     },
     computed: {
@@ -30,8 +30,6 @@ export default {
         }
     },
     mounted: function (){
-
-        this.socket = this.$io(process.env.VUE_APP_SERVER_PATH, {query:`isCaster=${this.isCaster}`}),
 
         this.joinServer();
     },
