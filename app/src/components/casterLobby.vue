@@ -19,14 +19,20 @@
 export default {
     name: 'casterLobby',
     props: ['socket'],
-    methods: {
-        startgame() {
-            this.socket.emit('startGame', this.socket )
+    data: function() {
+        return {
+            users: []
         }
     },
-    mounted: function (){
+    computed: {
+        startgame: function() {
+            return this.socket.emit('startGame', this.socket )
+        },
+    },
+    created: function (){
         this.socket.on('userOnline', data => {
-               
+            // TODO : this not working (try nextick)
+               console.log("on connect : " + data);
             })
     }
 }

@@ -2,7 +2,7 @@
     <form class="playerLobby">
         <label for="username">Ton pseudo :</label>
         <input id="username" type="text" v-model="username" placeholder="your name">
-        <button @click="sendUsername()" class="btn success">loggin</button>
+        <button @click.prevent="sendUsername()" class="btn success">loggin</button>
     </form>
 </template>
 
@@ -17,7 +17,8 @@ export default {
     },
     methods: {
         sendUsername() {
-            this.socket.emit("newUserInRoom", this.username)
+            console.log("add user " + this.username + " : " +  this.$route.params.sessionId)
+            this.socket.emit("newUserInRoom", {username: this.username, roomId: this.$route.params.sessionId})
         }
     }
 }

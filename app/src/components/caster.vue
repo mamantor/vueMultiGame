@@ -20,7 +20,7 @@ export default {
     components: {
         casterLobby
     },
-    mounted: function() {
+    created: function() {
         this.socket.emit("createRoom", this.roomId)
     }
 }

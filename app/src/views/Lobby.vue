@@ -1,6 +1,6 @@
 <template>
     <div>
-        <caster v-bind:socket="this.socket" v-if="isCaster"/>
+        <caster v-bind:socket="this.socket" v-if="caster==='caster'"/>
         <player-lobby v-bind:socket="this.socket" v-else/>
     </div>
 </template>
@@ -21,16 +21,21 @@ export default {
             lastUser: "",
             users: [],
             messages: [],
-            socket: this.$io(process.env.VUE_APP_SERVER_PATH, {query:`isCaster=${this.isCaster}`})
+            
         }
     },
     computed: {
-        isCaster(){
-            return this.$route.params.caster==="caster"
+
+        socket: function() {
+            const caster = this.isCaster
+            return this.$io(process.env.VUE_APP_SERVER_PATH, {query: { isCaster: this.caster}})
+        },
+
+        caster: function() {
+            return this.$route.params.caster ? "caster" : "player"
         }
     },
     mounted: function (){
-
         this.joinServer();
     },
     methods : {

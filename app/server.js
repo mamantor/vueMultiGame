@@ -32,8 +32,8 @@ http.listen(process.env.LISTENING_PORT || 3000, () => {
 // });
 
 io.on("connection", socket =>{
-    console.log(socket.handshake.query.isCaster);
-    socket.handshake.query.isCaster ? addCasterListeners (socket) : addPlayerListeners (socket)
+
+    socket.handshake.query.isCaster === "caster" ? addCasterListeners (socket) : addPlayerListeners (socket)
     
     
     // socket.emit('loggedIn', {
@@ -55,13 +55,14 @@ io.on("connection", socket =>{
 })
 
 function addPlayerListeners (socket) {
-
-  socket.on('newUserInRoom', (newUsername, roomID) => {
-    console.log(`${username} joined the lobby`);
-        socket.username = username;
+  socket.on('newUserInRoom', (data) => {
+    newUsername = data.username;
+    roomID = data.roomID;
+    console.log(`${newUsername} joined the lobby`);
+        socket.username = newUsername;
         joinRoom(socket, roomID);
         socket.caster=getCasterSocket(socket);
-        io.to(socket.room.caster).emit('userOnline', socket.username)
+        io.to(socket.caster).emit('userOnline', socket.username)
   })
 }
 
@@ -87,6 +88,7 @@ function getCasterSocket(socket){
     }
     
   }
+  console.log('no room found');
   return ''
 }
 
