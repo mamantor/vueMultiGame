@@ -47,23 +47,38 @@ io.on("connection", socket =>{
     //     users.push(socket);
     //     io.to(socket.room).emit('userOnline', socket.username)
     // });
-    socket.on("disconnect", () => {
-      console.log(`${socket.username} has left the lobby.`);
-      io.to(socket.room).emit("userDisconnect", socket.username);
-      users.splice(users.indexOf(socket),1);
-  });
+    
 })
 
 function addPlayerListeners (socket) {
   socket.on('newUserInRoom', (data) => {
     newUsername = data.username;
-    roomID = data.roomID;
+    roomID = data.roomId;
     console.log(`${newUsername} joined the lobby`);
-        socket.username = newUsername;
-        joinRoom(socket, roomID);
-        socket.caster=getCasterSocket(socket);
-        io.to(socket.caster).emit('userOnline', socket.username)
+
+    socket.username = newUsername;
+    joinRoom(socket, roomID);
+
+    const caster=getCasterSocket(socket);
+    if(caster){
+      caster.emit('userOnline', socket.username)
+    }
+    else{
+      socket.emit('noCasterForThisRoomFound');
+    }
   })
+
+  socket.on("disconnect", () => {
+    console.log(`${socket.username} has left the lobby.`);
+    const caster=getCasterSocket(socket);
+    if(caster){
+      caster.emit('userDisconnect', socket.username)
+    }
+    else{
+      socket.emit('noCasterForThisRoomFound');
+    }
+    users.splice(users.indexOf(socket),1);
+  });
 }
 
 function addCasterListeners (casterSocket) {
@@ -73,29 +88,36 @@ function addCasterListeners (casterSocket) {
     const roomsRef = admin.database().ref(`rooms/${roomID}`);
     roomsRef.child('caster').set({ host: casterSocket.handshake.address, uuid : uuid()})
 
+
+    rooms.push({id:roomID, caster:casterSocket});
+    console.table(rooms)
+
     joinRoom(casterSocket, roomID)
 
-    rooms.push({roomID:roomID, caster:casterSocket});
+    
 
     casterSocket.emit('roomCreated', roomID)
   });
 }
 
 function getCasterSocket(socket){
-  for (room in rooms) {
-    if (room.roomID === socket.roomID) {
+  for (room of rooms) {
+    if (room.id === socket.roomID) {
+      console.log('room trouvée')
       return room.caster
     }
     
   }
   console.log('no room found');
-  return ''
+  return false
 }
 
 function joinRoom(socket, roomID){
         // SOCKET SHIT
         socket.join(roomID);
         // SERVER SHIT
+        console.log(`roomID ${roomID} on joinroom`);
+        
         socket.roomID = roomID;
 }
     // socket.on('room', room => {

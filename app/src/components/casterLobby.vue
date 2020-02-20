@@ -10,7 +10,13 @@
         <div @click="check()" class="checker" v-bind:class="{ checkedColor :isChecked }"></div>
         <ChatWindow v-bind:messages="messages"/> -->
         <h3>Is players ready ?</h3>
-        <button @click="startGame()"></button>
+        <button @click="startBtn">start</button>
+
+        <h3>{{users.length}} player<template v-if="users.length >> 1">s</template> in the party </h3>
+
+        <div :key="user.uid" v-for="user in this.users" class="user">
+            <span>{{ user }}</span>
+        </div>
     </div> 
 </template>
 
@@ -24,16 +30,19 @@ export default {
             users: []
         }
     },
-    computed: {
-        startgame: function() {
-            return this.socket.emit('startGame', this.socket )
+    methods: {
+        startBtn() {
+            this.$emit('startGame')
+            this.socket.emit('startGame', this.socket )
         },
     },
     created: function (){
         this.socket.on('userOnline', data => {
-            // TODO : this not working (try nextick)
-               console.log("on connect : " + data);
-            })
+            this.users.push(data)
+        })
+        this.socket.on('userDisconnect', user =>{
+            this.users.splice(this.users.indexOf(user), 1)
+        })
     }
 }
 </script>
