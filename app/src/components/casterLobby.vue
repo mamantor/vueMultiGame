@@ -33,7 +33,7 @@ export default {
     methods: {
         startBtn() {
             this.$emit('startGame')
-            this.socket.emit('startGame', this.socket )
+            this.socket.emit('startGame')
         },
     },
     created: function (){

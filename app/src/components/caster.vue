@@ -26,7 +26,8 @@ export default {
         
     },
     methods: {
-        startGame(){
+        start(){
+            console.log('start')
             this.started = true
         }
     },
