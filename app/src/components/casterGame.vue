@@ -10,7 +10,12 @@
 
 export default {
     name: 'casterGame',
+    data: function (){
+        return{
 
+        }
+        
+    },
     
 }
 </script>

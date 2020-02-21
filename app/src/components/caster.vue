@@ -5,9 +5,9 @@
             v-show="!started" 
             v-on:startGame="startGame" 
             v-bind:socket="this.socket"
-        />
+        ></caster-lobby>
 
-        <caster-game v-show="started" />
+        <caster-game v-show="started"></caster-game>
     </div>
 </template>
 
