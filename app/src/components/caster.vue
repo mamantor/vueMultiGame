@@ -7,7 +7,7 @@
             v-bind:socket="this.socket"
         ></caster-lobby>
 
-        <caster-game v-show="started"></caster-game>
+        <caster-game v-if="started"></caster-game>
     </div>
 </template>
 

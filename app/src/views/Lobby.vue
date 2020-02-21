@@ -13,7 +13,7 @@ export default {
     name:'lobby',
     components: {
         caster,
-        playerLobby
+        playerLobby,
     },
     data: function() {
         return {
