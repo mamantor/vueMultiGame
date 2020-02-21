@@ -1,9 +1,8 @@
 <template>
     <div>
-        <button @click="startRoom()" class="btn success">Start Game</button>
-        <button @click="showAbout()" class="btn success">About</button>
+        <button @click="startRoom()" class="btn primary">Start Game</button>
+        <button @click="showAbout()" class="btn secondary">About</button>
         <!-- <router-link to="/lobby">lobby</router-link> -->
-        <router-view></router-view>
     </div>
 </template>
 
@@ -17,7 +16,15 @@ export default {
             const newSessionUuid = uuid();
             const devSessionUuid = newSessionUuid.slice(0,4,1);
             // const devSessionUuid = 
-            this.$router.push({ path: `/lobby/${devSessionUuid}` })
+            var roomRef = this.$fb.database.ref(`rooms/${devSessionUuid}`);
+            roomRef.once('value', snapshot => {
+                if (snapshot.val()==null) {
+                    this.$router.push({ path: `/lobby/${devSessionUuid}/caster`})
+                } else {
+                    this.startRoom()
+                }
+            });
+            
         },
         showAbout () {
             this.$router.push({ path: `/about`})
@@ -26,6 +33,27 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+    .btn{
+        padding: 10px 25px;
+        text-transform: uppercase;
+        font-weight: 500;
+        border-radius: 5px;
+        border: none;
+        box-shadow: none;
+        cursor: pointer;
 
+        &.primary{
+            color: white;
+            background-color: cadetblue;
+        }
+        &.secondary{
+            color: cadetblue;
+            background-color: #e2e2e2;
+        }
+
+        &:hover, &:focus, &:active{
+            transform: scale(1.05);
+        }
+    }
 </style>
