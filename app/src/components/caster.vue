@@ -3,7 +3,7 @@
         {{ roomId }}
         <caster-lobby 
             v-show="!started" 
-            v-on:startGame="startGame" 
+            v-on:startGame="start" 
             v-bind:socket="this.socket"
         ></caster-lobby>
 
