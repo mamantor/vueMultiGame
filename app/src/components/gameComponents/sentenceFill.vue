@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        fill this sentence
+        fill this sentence ...
         <countdown :time="2*1000" @end="endGame"/>
     </div>
 </template>
@@ -24,7 +24,8 @@ export default {
     methods: {
         endGame() {
             console.log('this game is over man')
-            
+            console.log(this.$store)
+            this.$store.commit("gameState", "scoring")
         }
     }
 }

@@ -37,6 +37,7 @@ export default {
     },
     created: function() {
         this.socket.emit("createRoom", this.roomId)
+
     }
 }
 </script>
