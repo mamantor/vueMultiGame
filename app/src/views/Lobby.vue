@@ -1,13 +1,14 @@
 <template>
     <div>
-        <caster v-bind:socket="this.socket" v-if="caster==='caster'"/>
-        <player-lobby v-bind:socket="this.socket" v-else/>
+        <caster v-if="caster==='caster'"/>
+        <player-lobby v-else/>
     </div>
 </template>
 
 <script>
 import caster from '../components/caster.vue'
 import playerLobby from '../components/playerLobby.vue'
+import Vue from "vue"
 
 export default {
     name:'lobby',
@@ -25,54 +26,15 @@ export default {
         }
     },
     computed: {
-
-        socket: function() {
-            const caster = this.isCaster
-            return this.$io(process.env.VUE_APP_SERVER_PATH, {query: { isCaster: this.caster}})
-        },
-
         caster: function() {
             return this.$route.params.caster ? "caster" : "player"
         }
     },
-    mounted: function (){
-        this.joinServer();
-    },
-    methods : {
-
-        check () {
-            this.isChecked = !this.isChecked;
-
-        },
-        
-        joinServer : function () {
-            // this.socket.on('activate', data => {
-            //     this.messages.push(data.message);
-            // });
-            // this.socket.on('newuserintheroom', data => {
-            //     console.log('new user in the room ')
-            //     console.log('data : %s', data.lastUser)
-            //     this.lastUser = data.lastUser;
-            // })
-            // this.socket.on('loggedIn', data =>{
-            //     this.socket.emit('room', this.$route.params.sessionId)
-
-            //     this.isChecked = data.isActivated;
-            //     this.messages = data.messages;
-            //     this.users = data.users;
-
-            // })
-
-            // this.listen();
-        },
-    //     listen: function () {
-    //         this.socket.on('userOnline', user => {
-    //             this.users.push(user);
-    //         });
-    //         this.socket.on('userDisconect', user => {
-    //             this.users.splice(this.usersindexOf(user), 1);
-    //         })
-    //     },
+    created: function (){
+        const caster = this.isCaster
+        const socket =  this.$io(process.env.VUE_APP_SERVER_PATH, {query: { isCaster: this.caster}})
+        Object.defineProperty(Vue.prototype, '$socket', { value: socket });
+        this.$store.commit("socketStore", socket);
     }
 }
 </script>

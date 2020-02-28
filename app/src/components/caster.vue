@@ -4,7 +4,6 @@
         <caster-lobby 
             v-show="!started" 
             v-on:startGame="start" 
-            v-bind:socket="this.socket"
         ></caster-lobby>
 
         <caster-game v-if="started"></caster-game>
@@ -17,7 +16,6 @@ import casterGame from '../components/casterGame.vue'
 
 export default {
     name: 'caster',
-    props: ['socket'],
     data: function (){
         return{
             roomId: this.$route.params.sessionId,
@@ -36,8 +34,8 @@ export default {
         casterGame
     },
     created: function() {
-        this.socket.emit("createRoom", this.roomId)
-
+        
+        this.$socket.emit("createRoom", this.roomId)
     }
 }
 </script>

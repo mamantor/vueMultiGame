@@ -24,24 +24,30 @@
 
 export default {
     name: 'casterLobby',
-    props: ['socket'],
     data: function() {
         return {
-            users: []
+        }
+    },
+    computed: {
+        users : function() {
+            return this.$store.state.users
         }
     },
     methods: {
         startBtn() {
             this.$emit('startGame')
-            this.socket.emit('startGame')
+            this.$socket.emit('startGame')
         },
     },
     created: function (){
-        this.socket.on('userOnline', data => {
-            this.users.push(data)
+        console.log(this.$socket)
+        this.$socket.on('userOnline', data => {
+            // this.users.push(data)
+            this.$store.commit("newUser",data)
         })
-        this.socket.on('userDisconnect', user =>{
-            this.users.splice(this.users.indexOf(user), 1)
+        this.$socket.on('userDisconnect', user =>{
+            this.$store.commit("newUser",user)
+
         })
     }
 }

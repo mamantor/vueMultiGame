@@ -1,5 +1,5 @@
 <template>
-    <VueCountdown @end="$emit('end')" :time=time >
+    <VueCountdown ref="VueCountdown" @end="$emit('end')" :time=time >
         <template slot-scope="props">{{ props.seconds }}</template>
     </VueCountdown>
 
@@ -14,6 +14,14 @@ export default {
     props: ['time'],
     components: {
         VueCountdown
+    },
+    methods: {
+        abort: function(){
+            this.$refs.VueCountdown.abort();
+        },
+        start: function(){
+            this.$refs.VueCountdown.start();
+        }
     }
 }
 </script>

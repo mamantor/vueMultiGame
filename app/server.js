@@ -6,11 +6,7 @@ require('dotenv').config();
 
 const uuid = require("uuid");
 
-
-let isActivated = false;
 let users = [];
-let messages = [];
-let index = 0;
 let rooms = [];
 
 var serviceAccount = require(process.env.FIREBASE_KEY);
@@ -68,6 +64,13 @@ function addPlayerListeners (socket) {
     }
   })
 
+  socket.on('userAnswer', (data) => {
+    const caster=getCasterSocket(socket);
+
+    console.log(data);
+    caster.emit('userAnswer', {username : socket.username, answer: data})
+  })
+
   socket.on("disconnect", () => {
     console.log(`${socket.username} has left the lobby.`);
     const caster=getCasterSocket(socket);
@@ -98,6 +101,17 @@ function addCasterListeners (casterSocket) {
 
     casterSocket.emit('roomCreated', roomID)
   });
+
+  casterSocket.on('scoring', () => {
+    console.log("game in scoring mode");
+    console.log(casterSocket.roomID);
+    io.to(casterSocket.roomID).emit('scoring')
+  });
+  casterSocket.on('playing', () => {
+    console.log("game in playing mode");
+    console.log(casterSocket.roomID);
+    io.to(casterSocket.roomID).emit('playing')
+  })
 }
 
 function getCasterSocket(socket){
