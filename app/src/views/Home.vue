@@ -44,13 +44,17 @@ export default {
         background-size: cover;
         width: 100%;
         height: 100%;
-        position: relative;
+        position: absolute;
+        top: 0;
+        left: 0;
         background-position: center;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .logo{
-        position: absolute;
-        top: 20%;
-        left: 50%;
+        margin-bottom: 20px;
         transform: translateX(-50%);
         animation-name: rubberBand;
         -webkit-animation-duration: 1s;

@@ -27,17 +27,26 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.btn{
+    padding: 10px 25px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 5px;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
 
-#nav {
-  padding: 30px;
-}
+    &.primary{
+        color: white;
+        background-color: cadetblue;
+    }
+    &.secondary{
+        color: cadetblue;
+        background-color: #e2e2e2;
+    }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+    &:hover, &:focus, &:active{
+        transform: scale(1.05);
+    }
 }
 </style>
