@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="roomNotFound" v-if="roomNotFound">no room found</div>
+        <div class="msgbox roomNotFound" v-if="roomNotFound"><p>Cette room n'existe pas..</p></div>
         <input id="roomID" v-model="roomID" class="btn success" placeholder="ROOM ID">
         <button @click="joinRoom()" class="btn success">Join Room</button>
         
