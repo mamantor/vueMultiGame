@@ -64,25 +64,26 @@ export default {
 .msgbox{
   position: fixed;
   z-index: 10;
-  box-shadow: 5px 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.15);
   width: 80%;
   padding: 2vh 2vw;
   transition: 0.5s;
   border-radius: 0 0 5px 5px;
-  top: 0;
+  top:0;
   left:50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
   background: lightgrey;
   color: black;
   font-size: 16px;
   animation: apearTop forwards ease-out 8s;
+  font-weight: 500;
 
-  .error{
+  &.error{
     color: white;
     background-color: red;
   }
 
-  .succes{
+  &.succes{
     color: white;
     background-color: red;
   }
@@ -109,8 +110,8 @@ export default {
   94%{
     transform: translate(-50%, 0%);
   }
-  95%{
-    transform: translate(-50%, 2%);
+  96%{
+    transform: translate(-50%, 3%);
   }
   100%{
     transform: translate(-50%, -100%);

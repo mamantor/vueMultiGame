@@ -1,8 +1,7 @@
 <template>
     <div class="casterLobby">
         <h1>Lobby</h1>
-        <div>Room ID: {{ $route.params.sessionId}}</div>
-        <div>Room ID: {{ $route.params.caster}}</div>
+        <div class="msgbox success">Room ID: {{ $route.params.sessionId}}</div>
         <!-- <p class="username">Username: {{ username }}</p>
         <p class="online">Online : {{ users.length }}</p>
         <p class="online">List : {{ users }}</p>
